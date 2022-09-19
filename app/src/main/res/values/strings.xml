@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MyContacts</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="number">Номер телефона</string>
+    <string name="save">Сохранить изменения</string>
+    <string name="delete">Удалить контакт</string>
+</resources>
