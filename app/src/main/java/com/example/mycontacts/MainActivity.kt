@@ -8,9 +8,13 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.mycontacts.databinding.ActivityMainBinding
+import com.example.mycontacts.example.gson.JsonModel
+import com.example.mycontacts.example.gson.testJson
 import com.example.mycontacts.ui.AddContactActivity
 import com.example.mycontacts.ui.EditContactActivity
 import com.example.mycontacts.ui.MainViewModel
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), LifecycleObserver {
@@ -41,6 +45,39 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /**
+         * Тест Gson для домашнего задания:
+         */
+        val gson = Gson()
+
+        //Конвертация из строки json в объекты
+        val resultObject = gson.fromJson(testJson, JsonModel::class.java )
+        Log.e("LOG =>", resultObject.toString())
+
+        val profileJsonString = gson.toJson(JsonObject().apply {
+            addProperty("dob", resultObject.profile.dob)
+            addProperty("name", resultObject.profile.name)
+            addProperty("address", resultObject.profile.address)
+            addProperty("company", resultObject.profile.company)
+            addProperty("location", gson.toJson(resultObject.profile.location))
+        })
+
+        //Конвертация объектов в строку Json
+        val resultJsonString =gson.toJson(JsonObject().apply {
+            addProperty("id", resultObject.id)
+            addProperty("email", resultObject.email)
+            addProperty("roles", gson.toJson((resultObject.roles)))
+            addProperty("apiKey", resultObject.apiKey)
+            addProperty("profile", profileJsonString)
+            addProperty("username", resultObject.username)
+            addProperty("createdAt", resultObject.createdAt)
+            addProperty("updatedAt", resultObject.updatedAt)
+        })
+        Log.e("LOG =>", resultJsonString)
+        /**
+         * Тест Gson окончен.
+         */
 
         lifecycle.addObserver(defaultLifecycleObserver)
 
