@@ -38,9 +38,6 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         }
     }
 
-    /**
-     * Инициализация viewModel упрощенно с помощью KTX
-     */
     private val viewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,31 +47,15 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
          * Тест Gson для домашнего задания:
          */
         val gson = Gson()
-
         //Конвертация из строки json в объекты
         val resultObject = gson.fromJson(testJson, JsonModel::class.java )
         Log.e("LOG =>", resultObject.toString())
-
-        val profileJsonString = gson.toJson(JsonObject().apply {
-            addProperty("dob", resultObject.profile.dob)
-            addProperty("name", resultObject.profile.name)
-            addProperty("address", resultObject.profile.address)
-            addProperty("company", resultObject.profile.company)
-            addProperty("location", gson.toJson(resultObject.profile.location))
-        })
-
-        //Конвертация объектов в строку Json
-        val resultJsonString =gson.toJson(JsonObject().apply {
-            addProperty("id", resultObject.id)
-            addProperty("email", resultObject.email)
-            addProperty("roles", gson.toJson((resultObject.roles)))
-            addProperty("apiKey", resultObject.apiKey)
-            addProperty("profile", profileJsonString)
-            addProperty("username", resultObject.username)
-            addProperty("createdAt", resultObject.createdAt)
-            addProperty("updatedAt", resultObject.updatedAt)
-        })
+        //Конвертация из объекты в строки json
+        val resultJsonString = gson.toJson(resultObject)
         Log.e("LOG =>", resultJsonString)
+        //Конвертация из строки json в объекты
+        val resultObject2 = gson.fromJson(resultJsonString,JsonModel::class.java)
+        Log.e("LOG =>", resultObject2.toString())
         /**
          * Тест Gson окончен.
          */
